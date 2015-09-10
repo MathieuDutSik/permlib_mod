@@ -1,0 +1,7 @@
+INSTDIR         = $(HOME)/opt/permlib
+
+install:
+		mkdir -p $(INSTDIR)
+		mkdir -p $(INSTDIR)/lib
+		mkdir -p $(INSTDIR)/include
+		cp -r permlib $(INSTDIR)/include/.
