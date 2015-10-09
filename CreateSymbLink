@@ -1,0 +1,54 @@
+#!/usr/bin/perl -w
+
+$PERMLIB_ENVI='PERMLIB_INCDIR';
+$ThePrefix=$ENV{$PERMLIB_ENVI};
+
+print "ThePrefix = ".$ThePrefix."\n";
+
+$TmpFile="/tmp/filesave";
+
+$order="pwd > ".$TmpFile;
+if (system($order) != 0) {
+    die "Error in running pwd\n";
+}
+
+open(INFILE, $TmpFile);
+@B=<INFILE>;
+close(INFILE);
+
+$order="rm -f ".$TmpFile;
+if (system($order) != 0) {
+    die "Error in removing ".$TmpFile;
+}
+
+$_=$B[0];
+s/\n//;
+$CurrDir=$_;
+print "CurrDir = ".$CurrDir."\n";
+
+@U=split("/", $ThePrefix);
+$ThePrefixRed="";
+for ($iU=1; $iU<scalar(@U); $iU++)
+{
+    $eU=$U[$iU-1];
+    $ThePrefixRed=$ThePrefixRed.$eU."/";
+}
+
+$order="mkdir -p ".$ThePrefixRed;
+print "order=".$order."\n";
+if (system($order) != 0) {
+    die "Error in creating directory = ".$ThePrefixRed;
+}
+
+$order="mkdir -p ".$ThePrefix;
+print "order=".$order."\n";
+if (system($order) != 0) {
+    die "Error in creating directory = ".$ThePrefix;
+}
+
+$order="(cd ".$ThePrefix." && ln -sf ".$CurrDir."/include/permlib)";
+print "order=".$order."\n";
+if (system($order) != 0) {
+    die "Error in creating symbolic links for the include files\n";
+}
+
