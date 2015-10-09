@@ -35,19 +35,19 @@ for ($iU=1; $iU<scalar(@U); $iU++)
 }
 
 $order="mkdir -p ".$ThePrefixRed;
-print "order=".$order."\n";
+print "order = ".$order."\n";
 if (system($order) != 0) {
     die "Error in creating directory = ".$ThePrefixRed;
 }
 
 $order="mkdir -p ".$ThePrefix;
-print "order=".$order."\n";
+print "order = ".$order."\n";
 if (system($order) != 0) {
     die "Error in creating directory = ".$ThePrefix;
 }
 
 $order="(cd ".$ThePrefix." && ln -sf ".$CurrDir."/include/permlib)";
-print "order=".$order."\n";
+print "order = ".$order."\n";
 if (system($order) != 0) {
     die "Error in creating symbolic links for the include files\n";
 }

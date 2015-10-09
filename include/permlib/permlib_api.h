@@ -41,7 +41,9 @@
 #include <permlib/change/conjugating_base_change.h>
 #include <permlib/search/partition/vector_stabilizer_search.h>
 #include <permlib/search/classic/set_stabilizer_search.h>
+#include <permlib/search/partition/set_stabilizer_search.h>
 #include <permlib/search/classic/set_image_search.h>
+#include <permlib/search/partition/set_image_search.h>
 #include <permlib/search/classic/lex_smaller_image_search.h>
 #include <permlib/search/orbit_lex_min_search.h>
 
@@ -85,7 +87,7 @@ boost::shared_ptr<PermutationGroup> construct(unsigned long n, InputIteratorGen 
 //
 
 template<class InputIterator>
-boost::shared_ptr<PermutationGroup> setStabilizer(const PermutationGroup& group, InputIterator begin, InputIterator end) {
+boost::shared_ptr<PermutationGroup> setStabilizer_classic(const PermutationGroup& group, InputIterator begin, InputIterator end) {
 	if (begin == end)
 		return boost::shared_ptr<PermutationGroup>(new PermutationGroup(group));
 	
@@ -106,12 +108,34 @@ boost::shared_ptr<PermutationGroup> setStabilizer(const PermutationGroup& group,
 }
 
 
+template<class InputIterator>
+boost::shared_ptr<PermutationGroup> setStabilizer_partition(const PermutationGroup& group, InputIterator begin, InputIterator end) {
+	if (begin == end)
+		return boost::shared_ptr<PermutationGroup>(new PermutationGroup(group));
+	
+	PermutationGroup copy(group);
+	// change the base so that is prefixed by the set
+	ConjugatingBaseChange<PERMUTATION,TRANSVERSAL,
+		RandomBaseTranspose<PERMUTATION,TRANSVERSAL> > baseChange(copy);
+	baseChange.change(copy, begin, end);
+	
+	// prepare search without DCM pruning
+	partition::SetStabilizerSearch<BSGS<PERMUTATION,TRANSVERSAL>, TRANSVERSAL> backtrackSearch(copy, 0);
+	backtrackSearch.construct(begin, end);
+	
+	// start the search
+	boost::shared_ptr<PermutationGroup> stabilizer(new PermutationGroup(copy.n));
+	backtrackSearch.search(*stabilizer);
+	return stabilizer;
+}
+ 
+
 // ---------------------------------------------------------------------
 // set image
 //
 
 template<class InputIterator>
-boost::shared_ptr<Permutation> setImage(const PermutationGroup& group, InputIterator begin, InputIterator end, InputIterator begin2, InputIterator end2) {
+boost::shared_ptr<Permutation> setImage_classic(const PermutationGroup& group, InputIterator begin, InputIterator end, InputIterator begin2, InputIterator end2) {
 	PermutationGroup copy(group);
 	// change the base so that is prefixed by the set
 	ConjugatingBaseChange<PERMUTATION,TRANSVERSAL,
@@ -126,6 +150,23 @@ boost::shared_ptr<Permutation> setImage(const PermutationGroup& group, InputIter
 	return backtrackSearch.searchCosetRepresentative();
 }
 
+
+ 
+template<class InputIterator>
+boost::shared_ptr<Permutation> setImage_partition(const PermutationGroup& group, InputIterator begin, InputIterator end, InputIterator begin2, InputIterator end2) {
+	PermutationGroup copy(group);
+	// change the base so that is prefixed by the set
+	ConjugatingBaseChange<PERMUTATION,TRANSVERSAL,
+		RandomBaseTranspose<PERMUTATION,TRANSVERSAL> > baseChange(copy);
+	baseChange.change(copy, begin, end);
+	
+	// prepare search without DCM pruning
+	partition::SetImageSearch<BSGS<PERMUTATION,TRANSVERSAL>, TRANSVERSAL> backtrackSearch(copy, 0);
+	backtrackSearch.construct(begin, end, begin2, end2);
+	
+	// start the search
+	return backtrackSearch.searchCosetRepresentative();
+}
 
 // ---------------------------------------------------------------------
 // vector stabilizer

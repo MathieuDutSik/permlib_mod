@@ -1,0 +1,19 @@
+Modification to the permlib code done by Mathieu Dutour Sikiric.
+It should be completely clear that the main author of the
+code is Thomas Rehn.
+
+Goal is to add more functionality and usefulness of the code.
+
+Modifications done:
+---Add a default constructor to permutations so that
+   default permutation can be generated.
+---Add an extrator function for the transversals in order
+   to be able to iterate over the group elements and be
+   able to build groups that way.
+---Add the access to the partition backtrack for some cases
+   of stabilizers of sets and equivalences.
+
+Ask mathieu.dutour@gmail.com for further questions on the
+code.
+
+  Mathieu
