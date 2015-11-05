@@ -58,10 +58,14 @@ namespace std {
 #endif
 
 namespace permlib {
-#ifdef PERMLIB_DOMAIN_INT
-	typedef unsigned int dom_int;
+#ifdef PERMLIB_DOMAIN_LONG
+        typedef unsigned long dom_int;
 #else
+# ifdef PERMLIB_DOMAIN_INT
+	typedef unsigned int dom_int;
+# else
 	typedef unsigned short int dom_int;
+# endif
 #endif
 
 	/// returns random integer 0 <= x < upperBound 
