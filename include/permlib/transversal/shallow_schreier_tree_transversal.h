@@ -83,11 +83,11 @@ void ShallowSchreierTreeTransversal<PERM>::orbitUpdate(unsigned long beta, const
 
 template <class PERM>
 void ShallowSchreierTreeTransversal<PERM>::orbit(unsigned long beta, const std::list<typename PERM::ptr> &generators) {
-	std::vector<boost::shared_ptr<PERM> > &transversal = Transversal<PERM>::m_transversal;
+	std::vector<std::shared_ptr<PERM> > &transversal = Transversal<PERM>::m_transversal;
     
 	if (Transversal<PERM>::size() == 0) {
 		Transversal<PERM>::m_orbit.push_back(beta);
-		boost::shared_ptr<PERM> identity(new PERM(this->m_n));
+		std::shared_ptr<PERM> identity(new PERM(this->m_n));
 			transversal[beta] = identity;
 	}
         
@@ -107,8 +107,8 @@ void ShallowSchreierTreeTransversal<PERM>::orbit(unsigned long beta, const std::
 
 template <class PERM>
 void ShallowSchreierTreeTransversal<PERM>::addNewCubeLabel(unsigned long beta, const PERM &s, const unsigned long &beta_prime) {
-	std::vector<boost::shared_ptr<PERM> > &transversal = Transversal<PERM>::m_transversal;
-	boost::shared_ptr<PERM> gPath(SchreierTreeTransversal<PERM>::at(beta_prime));
+	std::vector<std::shared_ptr<PERM> > &transversal = Transversal<PERM>::m_transversal;
+	std::shared_ptr<PERM> gPath(SchreierTreeTransversal<PERM>::at(beta_prime));
 	*gPath *= s;
 	// will be new generator, so better flush it
 	gPath->flush();
@@ -130,7 +130,7 @@ void ShallowSchreierTreeTransversal<PERM>::addNewCubeLabel(unsigned long beta, c
 
 	m_cubeLabels.push_back(gPath);
 	
-	boost::shared_ptr<PERM> gPathInv(new PERM(*gPath));
+	std::shared_ptr<PERM> gPathInv(new PERM(*gPath));
 	gPathInv->invertInplace();
 	
 	// compute inv(gPath) * ... other generators

@@ -81,7 +81,7 @@ public:
 	/// reverts the last count elementary intersections of partition pi
 	void undo(Partition& pi, unsigned int count) const;
 	
-	typedef typename boost::shared_ptr<Refinement<PERM> > RefinementPtr;
+	typedef typename std::shared_ptr<Refinement<PERM> > RefinementPtr;
 	typedef typename std::vector<RefinementPtr>::const_iterator RefinementPtrIterator;
 	
 	/// the type of this refinement

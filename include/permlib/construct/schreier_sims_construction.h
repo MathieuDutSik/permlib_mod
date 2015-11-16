@@ -98,11 +98,11 @@ BSGS<PERM, TRANS> SchreierSimsConstruction<PERM, TRANS>
 	std::vector<std::list<typename PERM::ptr> > S;
 	this->setup(generatorsBegin, generatorsEnd, prescribedBaseBegin, prescribedBaseEnd, ret, S);
 	
-	std::vector<boost::shared_ptr<SchreierGenerator<PERM, TRANS> > > SchreierGens;
+	std::vector<std::shared_ptr<SchreierGenerator<PERM, TRANS> > > SchreierGens;
 	for (unsigned int i = 0; i < B.size(); ++i) {
 		BOOST_ASSERT( i < U.size() );
 		BOOST_ASSERT( i < S.size() );
-		SchreierGens.push_back(boost::shared_ptr<SchreierGenerator<PERM, TRANS> >(new SchreierGenerator<PERM, TRANS>(&U[i], S[i].begin(), S[i].end())));
+		SchreierGens.push_back(std::shared_ptr<SchreierGenerator<PERM, TRANS> >(new SchreierGenerator<PERM, TRANS>(&U[i], S[i].begin(), S[i].end())));
 	}
 	
 	unsigned int j = B.size();
@@ -133,12 +133,12 @@ BSGS<PERM, TRANS> SchreierSimsConstruction<PERM, TRANS>
 					S.push_back(std::list<typename PERM::ptr>());
 					U.push_back(TRANS(n));
 				}
-				boost::shared_ptr<PERM> hPtr(new PERM(h));
+				std::shared_ptr<PERM> hPtr(new PERM(h));
 				S[j].insert(S[j].end(), hPtr);
 
 				ret.orbitUpdate(j, S[j], hPtr);
 				if (j >= SchreierGens.size()) {
-					boost::shared_ptr<SchreierGenerator<PERM, TRANS> > localVar(new SchreierGenerator<PERM, TRANS>(&U[j], S[j].begin(), S[j].end()));
+					std::shared_ptr<SchreierGenerator<PERM, TRANS> > localVar(new SchreierGenerator<PERM, TRANS>(&U[j], S[j].begin(), S[j].end()));
 					SchreierGens.push_back(localVar);
 				} else {
 					SchreierGens[j]->update(S[j].size() - 1);

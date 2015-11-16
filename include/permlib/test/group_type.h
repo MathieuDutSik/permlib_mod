@@ -268,7 +268,7 @@ public:
 	}
 	
 protected:
-	typedef boost::shared_ptr<const GroupType> GroupTypePtr;
+	typedef std::shared_ptr<const GroupType> GroupTypePtr;
 	std::vector<GroupTypePtr> m_components;
 	
 	virtual bool equalsType(const GroupType* type_) const { 

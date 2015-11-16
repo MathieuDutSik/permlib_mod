@@ -63,7 +63,7 @@ public:
 	 * @param support the support of the group (i.e. a set of all elements that are moved by at least one permutation)
 	 * @param s the set for which we want to decide whether the permutation action is trivial
 	 */
-	BaseSupportRestriction(const boost::shared_ptr<std::set<dom_int> >& support, const std::vector<dom_int>& s)
+	BaseSupportRestriction(const std::shared_ptr<std::set<dom_int> >& support, const std::vector<dom_int>& s)
 		: m_support(support), m_originalSet(s) {}
 	
 	/**
@@ -75,7 +75,7 @@ public:
 	 */
 	virtual const std::vector<dom_int>* set() const { return &m_originalSet; }
 protected:
-	const boost::shared_ptr<std::set<dom_int> > m_support;
+	const std::shared_ptr<std::set<dom_int> > m_support;
 	const std::vector<dom_int>& m_originalSet;
 };
 
@@ -86,7 +86,7 @@ public:
 	 * @param support the support of the group (i.e. a set of all elements that are moved by at least one permutation)
 	 * @param s the set for which we want to decide whether the permutation action is trivial
 	 */
-	ReducedSupportRestriction(const boost::shared_ptr<std::set<dom_int> >& support, const std::vector<dom_int>& s)
+	ReducedSupportRestriction(const std::shared_ptr<std::set<dom_int> >& support, const std::vector<dom_int>& s)
 		: BaseSupportRestriction(support, s) {}
 	
 	/**
@@ -105,7 +105,7 @@ public:
 	 * @param support the support of the group (i.e. a set of all elements that are moved by at least one permutation)
 	 * @param s the set for which we want to decide whether the permutation action is trivial
 	 */
-	FullSupportRestriction(const boost::shared_ptr<std::set<dom_int> >& support, const std::vector<dom_int>& s) 
+	FullSupportRestriction(const std::shared_ptr<std::set<dom_int> >& support, const std::vector<dom_int>& s) 
 		: BaseSupportRestriction(support, s), m_reducedSet(0) 
 	{
 		m_reducedSet = new std::vector<dom_int>();

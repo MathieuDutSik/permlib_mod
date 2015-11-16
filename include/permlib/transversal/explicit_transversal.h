@@ -90,12 +90,12 @@ template <class PERM>
 void ExplicitTransversal<PERM>::registerMove(unsigned long from, unsigned long to, const typename PERM::ptr &p) {
 	Transversal<PERM>::registerMove(from, to, p);
 
-	std::vector<boost::shared_ptr<PERM> > &transversal = Transversal<PERM>::m_transversal;
+	std::vector<std::shared_ptr<PERM> > &transversal = Transversal<PERM>::m_transversal;
 
     if (!transversal[from])
-        transversal[to] = boost::shared_ptr<PERM>(new PERM(*p));
+        transversal[to] = std::shared_ptr<PERM>(new PERM(*p));
     else {
-        transversal[to] = boost::shared_ptr<PERM>(new PERM(*transversal[from]));
+        transversal[to] = std::shared_ptr<PERM>(new PERM(*transversal[from]));
         (*transversal[to]) *= *p;
     }
 }
@@ -117,7 +117,7 @@ ExplicitTransversal<PERM> ExplicitTransversal<PERM>::clone(const std::map<PERM*,
 	BOOST_FOREACH(typename PERM::ptr& p, ret.m_transversal) {
 		if (!p)
 			continue;
-		p = boost::shared_ptr<PERM>(new PERM(*p));
+		p = std::shared_ptr<PERM>(new PERM(*p));
 	}
 	return ret;
 }

@@ -150,7 +150,7 @@ BSGS<PERM, TRANS> RandomSchreierSimsConstruction<PERM, TRANS, Integer>
 					U.push_back(TRANS(n));
 				}
 				
-				boost::shared_ptr<PERM> hPtr(new PERM(h));
+				std::shared_ptr<PERM> hPtr(new PERM(h));
 				S[j].insert(S[j].end(), hPtr);
 
 				ret.orbitUpdate(j, S[j], hPtr);

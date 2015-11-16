@@ -114,7 +114,7 @@ RBase<BSGSIN,TRANSRET>::RBase(const BSGSIN& bsgs, unsigned int pruningLevelDCM, 
 template<class BSGSIN,class TRANSRET>
 void RBase<BSGSIN,TRANSRET>::construct(SubgroupPredicate<PERM>* pred, RefinementFamily<PERM>* predRefinement) {
 	this->m_pred.reset(pred);
-	typedef typename boost::shared_ptr<RefinementFamily<PERM> > RefinementFamilyPtr;
+	typedef typename std::shared_ptr<RefinementFamily<PERM> > RefinementFamilyPtr;
 	std::list<RefinementFamilyPtr> refinements;
 	
 	if (!this->m_bsgs.isSymmetricGroup()) {

@@ -44,7 +44,6 @@
 #include <list>
 #include <map>
 
-#include <boost/shared_ptr.hpp>
 #include <boost/dynamic_bitset.hpp>
 #include <boost/foreach.hpp>
 #include <boost/cstdint.hpp>
@@ -60,8 +59,8 @@ public:
 	/// typedef for permutation image
 	typedef std::vector<dom_int> perm;
 	
-	/// boost shared_ptr of this class
-	typedef boost::shared_ptr<Permutation> ptr;
+	/// shared_ptr of this class
+	typedef std::shared_ptr<Permutation> ptr;
 	
 	/// default constructor needed sometimes
 	Permutation();

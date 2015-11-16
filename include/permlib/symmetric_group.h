@@ -36,7 +36,6 @@
 #include <permlib/bsgs_core.h>
 #include <permlib/transversal/symmetric_group_transversal.h>
 
-#include <boost/shared_ptr.hpp>
 
 namespace permlib {
 
@@ -75,7 +74,7 @@ inline SymmetricGroup<PERM>::SymmetricGroup(unsigned int n_)
 		BSGSCore<PERM,TRANS>::B[i] = this->n-1-i;
 		BSGSCore<PERM,TRANS>::U.push_back(SymmetricGroupTransversal<PERM>(this, i));
 		if (i < static_cast<unsigned int>(this->n-1)) {
-			boost::shared_ptr<PERM> gen(new PERM(this->n));
+			std::shared_ptr<PERM> gen(new PERM(this->n));
 			gen->setTransposition(i, i+1);
 			BSGSCore<PERM,TRANS>::S.push_back(gen);
 		}
@@ -91,7 +90,7 @@ inline void SymmetricGroup<PERM>::copy(const SymmetricGroup<PERM>& symGroup)
 		BSGSCore<PERM,TRANS>::B[i] = symGroup.B[i];
 		BSGSCore<PERM,TRANS>::U.push_back(SymmetricGroupTransversal<PERM>(this, i));
 		if (i < n2-1) {
-			boost::shared_ptr<PERM> gen(new PERM(n2));
+			std::shared_ptr<PERM> gen(new PERM(n2));
 			gen->setTransposition(i, i+1);
 			BSGSCore<PERM,TRANS>::S.push_back(gen);
 		}

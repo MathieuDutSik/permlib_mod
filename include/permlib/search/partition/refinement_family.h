@@ -49,7 +49,7 @@ template<class PERM>
 class RefinementFamily {
 public:
 	typedef typename Refinement<PERM>::RefinementPtr RefinementPtr;
-	typedef boost::shared_ptr<Partition> PartitionPtr;
+	typedef std::shared_ptr<Partition> PartitionPtr;
 
     /// virtual destructor
     virtual ~RefinementFamily() {}

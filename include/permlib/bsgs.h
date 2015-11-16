@@ -40,7 +40,6 @@
 #include <boost/cstdint.hpp>
 #include <boost/foreach.hpp>
 #include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/utility.hpp>
 
 #include <permlib/bsgs_core.h>

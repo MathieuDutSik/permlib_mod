@@ -90,7 +90,7 @@ void SchreierTreeTransversal<PERM>::registerMove(unsigned long from, unsigned lo
 
 template <class PERM>
 PERM* SchreierTreeTransversal<PERM>::at(unsigned long val) const {
-	const std::vector<boost::shared_ptr<PERM> > &transversal = Transversal<PERM>::m_transversal;
+	const std::vector<std::shared_ptr<PERM> > &transversal = Transversal<PERM>::m_transversal;
 
 	if (transversal[val] == 0) {
 		return 0;

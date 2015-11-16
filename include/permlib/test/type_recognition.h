@@ -43,7 +43,6 @@
 #include <permlib/test/primitivity_test.h>
 #include <permlib/permlib_api.h>
 
-#include <boost/shared_ptr.hpp>
 #include <boost/math/common_factor_rt.hpp>
 #include <iostream>
 
@@ -59,7 +58,7 @@ template<class PERM, class TRANSVERSAL = SchreierTreeTransversal<PERM> >
 class TypeRecognition {
 public:
 	/// abbreviation for a pointer to a BSGS structure
-	typedef boost::shared_ptr<BSGS<PERM, TRANSVERSAL> > PermutationGroupPtr;
+	typedef std::shared_ptr<BSGS<PERM, TRANSVERSAL> > PermutationGroupPtr;
 	
 	/**
 	 * @param n the degree of the permutation group to analyze
@@ -321,7 +320,7 @@ GroupType* TypeRecognition<PERM,TRANSVERSAL>::largeSymmetricDiagonalSubgroup(std
 	if (m_generators.empty())
 		return NULL;
 	
-	typedef boost::shared_ptr<OrbitSet<PERM, dom_int> > OrbitPtr;
+	typedef std::shared_ptr<OrbitSet<PERM, dom_int> > OrbitPtr;
 	typedef typename PERM::ptr PERMptr;
 
 	orbitCharacteristic.clear();

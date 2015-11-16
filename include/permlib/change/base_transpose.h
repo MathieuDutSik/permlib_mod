@@ -125,7 +125,7 @@ void BaseTranspose<PERM,TRANS>::transpose(BSGS<PERM,TRANS> &bsgs, unsigned int i
 			boost::indirect_iterator<typename PERMlist::iterator> sBegin(S_i1.begin()), sEnd(S_i1.end());
 			if (!U_i1.contains(g / B[i+1]) && std::find(sBegin, sEnd, g) == sEnd) {
 				g.flush();
-				boost::shared_ptr<PERM> gen(new PERM(g));
+				std::shared_ptr<PERM> gen(new PERM(g));
 				S_i1.push_front(gen);
 				++m_statNewGenerators;
 				U_i1.orbitUpdate(B[i+1], S_i1, gen);

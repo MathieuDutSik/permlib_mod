@@ -81,7 +81,7 @@ private:
 	BSGSIN m_bsgs;
 	const BSGSIN* m_bsgsStabilizer;
 	typedef typename BSGSIN::PERMtype PERM;
-	typedef std::vector<boost::shared_ptr<PERM> > PERMvec;
+	typedef std::vector<std::shared_ptr<PERM> > PERMvec;
 
 	struct Candidate {
 		dset D;

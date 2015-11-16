@@ -41,7 +41,6 @@
 #include <vector>
 
 #include <boost/foreach.hpp>
-#include <boost/shared_ptr.hpp>
 
 namespace permlib {
 
@@ -51,7 +50,7 @@ class Transversal;
 template <class PERM>
 std::ostream &operator<< (std::ostream &out, const Transversal<PERM> &t) {
 	out << "{";
-	BOOST_FOREACH (boost::shared_ptr<PERM> p, t.m_transversal) {
+	BOOST_FOREACH (std::shared_ptr<PERM> p, t.m_transversal) {
 		if (p)
 			out << *p << ", ";
 		else
@@ -143,7 +142,7 @@ public:
 	virtual void updateGenerators(const std::map<PERM*,typename PERM::ptr>& generatorChange) {}
     
     virtual const unsigned long& element() const;
-    std::vector<boost::shared_ptr<PERM> > GetMtransversal() const;
+    std::vector<std::shared_ptr<PERM> > GetMtransversal() const;
 	
 	/// to stream
     friend std::ostream &operator<< <> (std::ostream &out, const Transversal<PERM> &p);
@@ -152,7 +151,7 @@ protected:
     unsigned int m_n;
 	
     /// transversal elements
-    std::vector<boost::shared_ptr<PERM> > m_transversal;
+    std::vector<std::shared_ptr<PERM> > m_transversal;
 	
     /// orbit elements
     std::list<unsigned long> m_orbit;
@@ -220,7 +219,7 @@ void Transversal<PERM>::sort(InputIterator Bbegin, InputIterator Bend) {
 
 template <class PERM>
 void Transversal<PERM>::permute(const PERM& g, const PERM& gInv) {
-	std::vector<boost::shared_ptr<PERM> > temp(m_n);
+	std::vector<std::shared_ptr<PERM> > temp(m_n);
 	for (unsigned long i=0; i<m_n; ++i) {
 		const unsigned long j = g / i;
 		temp[j] = m_transversal[i];
@@ -238,7 +237,7 @@ inline const unsigned long& Transversal<PERM>::element() const {
 }
 
 template <class PERM>
-std::vector<boost::shared_ptr<PERM> > Transversal<PERM>::GetMtransversal() const {
+std::vector<std::shared_ptr<PERM> > Transversal<PERM>::GetMtransversal() const {
   return m_transversal;
 }
 

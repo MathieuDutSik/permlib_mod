@@ -47,7 +47,6 @@
 #include <permlib/search/classic/lex_smaller_image_search.h>
 #include <permlib/search/orbit_lex_min_search.h>
 
-#include <boost/shared_ptr.hpp>
 #include <boost/iterator/counting_iterator.hpp>
 
 namespace permlib {
@@ -67,17 +66,17 @@ typedef OrbitSet<PERMUTATION,unsigned long> OrbitAsSet;
 //
 
 template<class InputIterator>
-boost::shared_ptr<PermutationGroup> construct(unsigned long n, InputIterator begin, InputIterator end) {
+std::shared_ptr<PermutationGroup> construct(unsigned long n, InputIterator begin, InputIterator end) {
 	SchreierSimsConstruction<PERMUTATION, TRANSVERSAL> schreierSims(n);
-	boost::shared_ptr<PermutationGroup> group(new PermutationGroup(schreierSims.construct(begin, end)));
+	std::shared_ptr<PermutationGroup> group(new PermutationGroup(schreierSims.construct(begin, end)));
 	return group;
 }
 
 template<class InputIteratorGen, class InputIteratorBase>
-boost::shared_ptr<PermutationGroup> construct(unsigned long n, InputIteratorGen beginGen, InputIteratorGen endGen,
+std::shared_ptr<PermutationGroup> construct(unsigned long n, InputIteratorGen beginGen, InputIteratorGen endGen,
             InputIteratorBase beginBase, InputIteratorBase endBase) {
 	SchreierSimsConstruction<PERMUTATION, TRANSVERSAL> schreierSims(n);
-	boost::shared_ptr<PermutationGroup> group(new PermutationGroup(schreierSims.construct(beginGen, endGen, beginBase, endBase)));
+	std::shared_ptr<PermutationGroup> group(new PermutationGroup(schreierSims.construct(beginGen, endGen, beginBase, endBase)));
 	return group;
 }
 
@@ -87,9 +86,9 @@ boost::shared_ptr<PermutationGroup> construct(unsigned long n, InputIteratorGen 
 //
 
 template<class InputIterator>
-boost::shared_ptr<PermutationGroup> setStabilizer_classic(const PermutationGroup& group, InputIterator begin, InputIterator end) {
+std::shared_ptr<PermutationGroup> setStabilizer_classic(const PermutationGroup& group, InputIterator begin, InputIterator end) {
 	if (begin == end)
-		return boost::shared_ptr<PermutationGroup>(new PermutationGroup(group));
+		return std::shared_ptr<PermutationGroup>(new PermutationGroup(group));
 	
 	PermutationGroup copy(group);
 	// change the base so that is prefixed by the set
@@ -102,16 +101,16 @@ boost::shared_ptr<PermutationGroup> setStabilizer_classic(const PermutationGroup
 	backtrackSearch.construct(begin, end);
 	
 	// start the search
-	boost::shared_ptr<PermutationGroup> stabilizer(new PermutationGroup(copy.n));
+	std::shared_ptr<PermutationGroup> stabilizer(new PermutationGroup(copy.n));
 	backtrackSearch.search(*stabilizer);
 	return stabilizer;
 }
 
 
 template<class InputIterator>
-boost::shared_ptr<PermutationGroup> setStabilizer_partition(const PermutationGroup& group, InputIterator begin, InputIterator end) {
+std::shared_ptr<PermutationGroup> setStabilizer_partition(const PermutationGroup& group, InputIterator begin, InputIterator end) {
 	if (begin == end)
-		return boost::shared_ptr<PermutationGroup>(new PermutationGroup(group));
+		return std::shared_ptr<PermutationGroup>(new PermutationGroup(group));
 	
 	PermutationGroup copy(group);
 	// change the base so that is prefixed by the set
@@ -124,7 +123,7 @@ boost::shared_ptr<PermutationGroup> setStabilizer_partition(const PermutationGro
 	backtrackSearch.construct(begin, end);
 	
 	// start the search
-	boost::shared_ptr<PermutationGroup> stabilizer(new PermutationGroup(copy.n));
+	std::shared_ptr<PermutationGroup> stabilizer(new PermutationGroup(copy.n));
 	backtrackSearch.search(*stabilizer);
 	return stabilizer;
 }
@@ -135,7 +134,7 @@ boost::shared_ptr<PermutationGroup> setStabilizer_partition(const PermutationGro
 //
 
 template<class InputIterator>
-boost::shared_ptr<Permutation> setImage_classic(const PermutationGroup& group, InputIterator begin, InputIterator end, InputIterator begin2, InputIterator end2) {
+std::shared_ptr<Permutation> setImage_classic(const PermutationGroup& group, InputIterator begin, InputIterator end, InputIterator begin2, InputIterator end2) {
 	PermutationGroup copy(group);
 	// change the base so that is prefixed by the set
 	ConjugatingBaseChange<PERMUTATION,TRANSVERSAL,
@@ -153,7 +152,7 @@ boost::shared_ptr<Permutation> setImage_classic(const PermutationGroup& group, I
 
  
 template<class InputIterator>
-boost::shared_ptr<Permutation> setImage_partition(const PermutationGroup& group, InputIterator begin, InputIterator end, InputIterator begin2, InputIterator end2) {
+std::shared_ptr<Permutation> setImage_partition(const PermutationGroup& group, InputIterator begin, InputIterator end, InputIterator begin2, InputIterator end2) {
 	PermutationGroup copy(group);
 	// change the base so that is prefixed by the set
 	ConjugatingBaseChange<PERMUTATION,TRANSVERSAL,
@@ -173,7 +172,7 @@ boost::shared_ptr<Permutation> setImage_partition(const PermutationGroup& group,
 //
 
 template<class InputIterator>
-boost::shared_ptr<PermutationGroup> vectorStabilizer(const PermutationGroup& group, InputIterator begin, InputIterator end, unsigned int maxEntry = 0) {
+std::shared_ptr<PermutationGroup> vectorStabilizer(const PermutationGroup& group, InputIterator begin, InputIterator end, unsigned int maxEntry = 0) {
 	std::vector<unsigned int> vector(begin, end);
 	if (maxEntry == 0) {
 		BOOST_FOREACH(const unsigned int& v, vector) {
@@ -203,7 +202,7 @@ boost::shared_ptr<PermutationGroup> vectorStabilizer(const PermutationGroup& gro
 	backtrackSearch.construct(vector.begin(), vector.end(), maxEntry);
 	
 	// start the search
-	boost::shared_ptr<PermutationGroup> stabilizer(new PermutationGroup(copy.n));
+	std::shared_ptr<PermutationGroup> stabilizer(new PermutationGroup(copy.n));
 	backtrackSearch.search(*stabilizer);
 	return stabilizer;
 }
@@ -214,8 +213,8 @@ boost::shared_ptr<PermutationGroup> vectorStabilizer(const PermutationGroup& gro
 //
 
 template<typename PDOMAIN,typename ACTION,typename InputIterator>
-std::list<boost::shared_ptr<OrbitSet<PERMUTATION,PDOMAIN> > > orbits(const PermutationGroup& group, InputIterator begin, InputIterator end) {
-	typedef boost::shared_ptr<OrbitSet<PERMUTATION,PDOMAIN> > ORBIT;
+std::list<std::shared_ptr<OrbitSet<PERMUTATION,PDOMAIN> > > orbits(const PermutationGroup& group, InputIterator begin, InputIterator end) {
+	typedef std::shared_ptr<OrbitSet<PERMUTATION,PDOMAIN> > ORBIT;
 	std::list<ORBIT> orbitList;
 	
 	for (; begin != end; ++begin) {
@@ -239,7 +238,7 @@ std::list<boost::shared_ptr<OrbitSet<PERMUTATION,PDOMAIN> > > orbits(const Permu
 	return orbitList;
 }
 
-inline std::list<boost::shared_ptr<OrbitAsSet> > orbits(const PermutationGroup& group) {
+inline std::list<std::shared_ptr<OrbitAsSet> > orbits(const PermutationGroup& group) {
 	return orbits<unsigned long, Transversal<PERMUTATION>::TrivialAction>(group, boost::counting_iterator<unsigned long>(0), boost::counting_iterator<unsigned long>(group.n));
 }
 

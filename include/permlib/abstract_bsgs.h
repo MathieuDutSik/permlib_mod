@@ -29,7 +29,6 @@
 //
 // ---------------------------------------------------------------------------
 
-#include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/iterator/counting_iterator.hpp>
 
@@ -59,7 +58,7 @@ public:
 	 * @param bsgs_ the BSGS data structure that represents this group
 	 * @param computeSupport if true, the support of the group is computed to accelerate stabilizer and lexMin computations
 	 */
-	AbstractBSGS(const boost::shared_ptr<PermutationGroup>& bsgs_, bool computeSupport = true);
+	AbstractBSGS(const std::shared_ptr<PermutationGroup>& bsgs_, bool computeSupport = true);
 	
 	virtual AbstractPermutationGroup* setStabilizer(const std::vector<dom_int>& s) const;
 	virtual OrbitList* orbits() const;
@@ -71,7 +70,7 @@ public:
 	std::list<typename TRANS::PERMtype::ptr> generators() const;
 
 	/// BSGS data structure for this permutation group
-	const boost::shared_ptr<PermutationGroup> bsgs() const { return m_bsgs; }
+	const std::shared_ptr<PermutationGroup> bsgs() const { return m_bsgs; }
 protected:
 	virtual void transversalSizes(std::vector<unsigned long>& sizes) const;
 	
@@ -81,13 +80,13 @@ protected:
 	/// returns a strategy to decide whether the action of this group is trivial on /s/
 	helpers::BaseSupportRestriction* supportRestriction(const std::vector<dom_int>& s) const;
 private:
-	const boost::shared_ptr<PermutationGroup> m_bsgs;
-	boost::shared_ptr<std::set<dom_int> > m_support;
+	const std::shared_ptr<PermutationGroup> m_bsgs;
+	std::shared_ptr<std::set<dom_int> > m_support;
 };
 
 
 template<typename TRANS>
-AbstractBSGS<TRANS>::AbstractBSGS(const boost::shared_ptr<PermutationGroup>& bsgs_, bool computeSupport)
+AbstractBSGS<TRANS>::AbstractBSGS(const std::shared_ptr<PermutationGroup>& bsgs_, bool computeSupport)
 	: m_bsgs(bsgs_)
 {
 	if ( ! computeSupport )
@@ -134,7 +133,7 @@ AbstractPermutationGroup* AbstractBSGS<TRANS>::setStabilizer(const std::vector<d
 	backtrackSearch.construct(setToStabilize->begin(), setToStabilize->end());
 	
 	// start the search
-	boost::shared_ptr<PermutationGroup> stabilizer(new PermutationGroup(copy.n));
+	std::shared_ptr<PermutationGroup> stabilizer(new PermutationGroup(copy.n));
 	backtrackSearch.search(*stabilizer);
 	return new AbstractBSGS<TRANS>(stabilizer, m_support);
 }

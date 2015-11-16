@@ -36,12 +36,11 @@
 #include <permlib/permutation.h>
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
 namespace permlib {
 
-typedef boost::shared_ptr<Permutation> PermutationPtr;
+typedef std::shared_ptr<Permutation> PermutationPtr;
 
 /// permutation class storing permutations as words of elementary Permutation 's
 /**
@@ -52,8 +51,8 @@ public:
 	/// typedef for permutation image
 	typedef Permutation::perm perm;
 	
-	/// boost shared_ptr of this class
-	typedef boost::shared_ptr<PermutationWord> ptr;
+	/// shared_ptr of this class
+	typedef std::shared_ptr<PermutationWord> ptr;
 	
 	/// constructs identity permutation acting on n elements
 	explicit PermutationWord(unsigned int n);
