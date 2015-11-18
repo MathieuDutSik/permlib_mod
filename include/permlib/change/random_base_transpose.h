@@ -36,8 +36,6 @@
 #include <permlib/change/base_transpose.h>
 #include <permlib/generator/random_schreier_generator.h>
 
-#include <boost/scoped_ptr.hpp>
-
 namespace permlib {
 
 /// implementation of a randomized base transposition algorithm

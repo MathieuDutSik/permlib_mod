@@ -39,7 +39,7 @@
 
 #include <boost/cstdint.hpp>
 #include <boost/foreach.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <boost/utility.hpp>
 
 #include <permlib/bsgs_core.h>
@@ -72,7 +72,7 @@ std::ostream &operator<< (std::ostream &out, const BSGS<PERM,TRANS> &bsgs) {
 	BOOST_FOREACH(const TRANS &U, bsgs.U) {
 		for (unsigned int i=0; i<bsgs.n; ++i)
 			// trigger transversal depth reload
-			boost::scoped_ptr<PERM> dummy(U.at(i));
+			std::unique_ptr<PERM> dummy(U.at(i));
 		out << U.size() << "{" << U.m_statMaxDepth << "}" << ",";
 	}
 	out << " = " << bsgs.order() << std::endl;
@@ -257,7 +257,7 @@ unsigned int BSGS<PERM, TRANS>::sift(const PERM& g, PERM& siftee, BaseIterator b
 		unsigned long b = *baseIt;
 		const TRANS& U_i = *transIt;
 		//std::cout << " ~~~ sift " << siftee << " b" << b << std::endl;
-		boost::scoped_ptr<PERM> u_b(U_i.at(siftee / b));
+		std::unique_ptr<PERM> u_b(U_i.at(siftee / b));
 		if (u_b == 0)
 			return k;
 		u_b->invertInplace();
@@ -312,7 +312,7 @@ PERM BSGS<PERM, TRANS>::random(const int i) const {
     for (int l = this->U.size()-1; l>=i ; --l) {
 		//std::cout << l << " : " << U[l] << " : " << U[l].size() << std::endl;
         unsigned long beta = *(boost::next(this->U[l].begin(), randomInt(this->U[l].size())));
-        boost::scoped_ptr<PERM> u_beta(this->U[l].at(beta));
+        std::unique_ptr<PERM> u_beta(this->U[l].at(beta));
         g *= *u_beta;
     }
     return g;

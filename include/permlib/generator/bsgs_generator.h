@@ -36,7 +36,7 @@
 #include <permlib/common.h>
 #include <permlib/generator/generator.h>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 namespace permlib {
 
@@ -89,9 +89,9 @@ typename BSGSGenerator<TRANS>::PERM BSGSGenerator<TRANS>::next() {
 	BOOST_ASSERT( m_hasNext );
 	PERM g(m_U[0].n());
 	for (int i = m_Upositions.size() - 1; i >= 0; --i) {
-		boost::scoped_ptr<PERM> u_beta( m_U[i].at( *m_Upositions[i] ) );
-		BOOST_ASSERT( u_beta );
-		g *= *u_beta;
+	  std::unique_ptr<PERM> u_beta( m_U[i].at( *m_Upositions[i] ) );
+	  BOOST_ASSERT( u_beta );
+	  g *= *u_beta;
 	}
 	
 	// advance position

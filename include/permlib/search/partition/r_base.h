@@ -366,14 +366,14 @@ bool RBase<BSGSIN,TRANSRET>::updateMappingPermutation(const BSGSIN& bsgs, const 
 		const unsigned int alpha = *fixSigmaIt;
 		const unsigned int beta = *fixPiIt;
 		if (t2 / alpha != beta) {
-			boost::scoped_ptr<PERM> u_beta(bsgs.U[i].at(t2 % beta));
-			if (u_beta) {
-				//std::cout << "  multiply with " << *u_beta << " for " << alpha+1 << "," << beta+1 << " // base " << bsgs.B[i] + 1<< std::endl;
-				t2 ^= *u_beta;
-			} else {
-				//std::cout << "could not find a u_b with " << (t2 % beta) << " at " << i << "--" << bsgs.B[i] << " -- " << &bsgs << std::endl;
-				return false;
-			}
+		  std::unique_ptr<PERM> u_beta(bsgs.U[i].at(t2 % beta));
+		  if (u_beta) {
+		    //std::cout << "  multiply with " << *u_beta << " for " << alpha+1 << "," << beta+1 << " // base " << bsgs.B[i] + 1<< std::endl;
+		    t2 ^= *u_beta;
+		  } else {
+		    //std::cout << "could not find a u_b with " << (t2 % beta) << " at " << i << "--" << bsgs.B[i] << " -- " << &bsgs << std::endl;
+		    return false;
+		  }
 		}
 		
 		++fixSigmaIt;

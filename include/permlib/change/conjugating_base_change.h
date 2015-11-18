@@ -34,7 +34,7 @@
 #define CONJUGATINGBASECHANGE_H_
 
 #include <boost/foreach.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <boost/cstdint.hpp>
 
 #include <permlib/change/base_change.h>
@@ -88,18 +88,18 @@ unsigned int ConjugatingBaseChange<PERM,TRANS,BASETRANSPOSE>::change(BSGS<PERM,T
 		const bool redundant = skipRedundant && this->isRedundant(bsgs, baseTargetPos, alpha);
 		
 		if (!redundant && beta != alpha) {
-			boost::scoped_ptr<PERM> r(bsgs.U[baseTargetPos].at(alpha));
-			if (r) {
-				c ^= *r;
-				cInv = ~c;
-				touchedC = true;
-			} else {
-				unsigned int pos = bsgs.insertRedundantBasePoint(alpha, baseTargetPos);
-				for (; pos > baseTargetPos; --pos) {
-					trans.transpose(bsgs, pos-1);
-					++BaseChange<PERM,TRANS>::m_statTranspositions;
-				}
-			}
+		  std::unique_ptr<PERM> r(bsgs.U[baseTargetPos].at(alpha));
+		  if (r) {
+		    c ^= *r;
+		    cInv = ~c;
+		    touchedC = true;
+		  } else {
+		    unsigned int pos = bsgs.insertRedundantBasePoint(alpha, baseTargetPos);
+		    for (; pos > baseTargetPos; --pos) {
+		      trans.transpose(bsgs, pos-1);
+		      ++BaseChange<PERM,TRANS>::m_statTranspositions;
+		    }
+		  }
 		}
 		if (!redundant)
 			++baseTargetPos;

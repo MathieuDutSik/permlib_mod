@@ -29,7 +29,7 @@
 //
 // ---------------------------------------------------------------------------
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <boost/iterator/counting_iterator.hpp>
 
 #include <algorithm>
@@ -115,7 +115,7 @@ AbstractPermutationGroup* AbstractBSGS<TRANS>::setStabilizer(const std::vector<d
 	if (s.empty())
 		return new AbstractBSGS<TRANS>(*this);
 	
-	boost::scoped_ptr<helpers::BaseSupportRestriction> supRestriction( supportRestriction(s) );
+	std::unique_ptr<helpers::BaseSupportRestriction> supRestriction( supportRestriction(s) );
 	if ( supRestriction->canBeIgnored() )
 		return new AbstractBSGS<TRANS>(*this);
 	const std::vector<dom_int>* setToStabilize = supRestriction->set();
@@ -180,7 +180,7 @@ bool AbstractBSGS<TRANS>::isLexMinSet(const std::vector<dom_int>& setIndices, co
 	if (setIndices.empty())
 		return true;
 	
-	boost::scoped_ptr<helpers::BaseSupportRestriction> supRestriction( supportRestriction(setIndices) );
+	std::unique_ptr<helpers::BaseSupportRestriction> supRestriction( supportRestriction(setIndices) );
 	if ( supRestriction->canBeIgnored() )
 		return true;
 	const std::vector<dom_int>* setToLexMin = supRestriction->set();
