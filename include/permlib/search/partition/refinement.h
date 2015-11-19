@@ -34,6 +34,7 @@
 #define REFINEMENT_H_
 
 #include <vector>
+#include <boost/shared_ptr.hpp>
 
 #include <permlib/search/partition/partition.h>
 

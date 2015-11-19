@@ -37,6 +37,7 @@
 #include <permlib/transversal/transversal.h>
 
 #include <boost/foreach.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/utility.hpp>
 #include <vector>
 #include <list>
@@ -130,7 +131,7 @@ bool PrimitivitySGSTest<TRANS>::blockOfImprimitivity(std::vector<dom_int>* minim
 		PERMLIB_DEBUG( std::cout << "lambda = " << lambda << std::endl; )
 		
 		for (std::vector<dom_int>::const_iterator lit = LambdaItBegin; lit != LambdaItEnd; ++lit) {
-			std::unique_ptr<PERM> u_lambda(m_U.at(lambda));
+			boost::scoped_ptr<PERM> u_lambda(m_U.at(lambda));
 			BOOST_ASSERT( u_lambda );
 			
 			const dom_int gamma = *lit;

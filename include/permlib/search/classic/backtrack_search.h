@@ -40,7 +40,7 @@
 
 #include <permlib/search/base_search.h>
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 
 namespace permlib {
 namespace classic {
@@ -157,7 +157,7 @@ unsigned int BacktrackSearch<BSGSIN,TRANSRET>::search(const PERM& g, unsigned in
 		--s;
 		unsigned long beta = g % *orbIt;
 		PERMLIB_DEBUG(std::cout << " BETA = " << beta << " <-- " << B[level] << std::endl;)
-		std::unique_ptr<PERM> u_beta_ptr(U[level].at(beta));
+		boost::scoped_ptr<PERM> u_beta_ptr(U[level].at(beta));
 		*u_beta_ptr *= g;
 
 		if (!this->m_pred->childRestriction(*u_beta_ptr, level, B[level])) {

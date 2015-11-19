@@ -71,7 +71,7 @@ RandomSchreierGenerator<PERM,TRANS>::RandomSchreierGenerator(const BSGS<PERM,TRA
 template <class PERM,class TRANS>
 PERM RandomSchreierGenerator<PERM,TRANS>::next() { 
 	PERM g = m_bsgs.random(m_i);
-	std::unique_ptr<PERM> u_g(m_U.at(g / m_bsgs.B[m_i]));
+	boost::scoped_ptr<PERM> u_g(m_U.at(g / m_bsgs.B[m_i]));
 	u_g->invertInplace();
 	g *= *u_g;
 	return g;

@@ -92,12 +92,12 @@ protected:
 	/// second BSGS of a group the sough elements have to member of
 	BSGSIN* m_bsgs2;
 	/// predicate that matches sought elements
-	std::unique_ptr<SubgroupPredicate<PERM> > m_pred;
+	boost::scoped_ptr<SubgroupPredicate<PERM> > m_pred;
 	
 	/// base point order
 	std::vector<unsigned long> m_order;
 	/// a sorter with respect to m_order
-	std::unique_ptr<BaseSorterByReference> m_sorter;
+	boost::scoped_ptr<BaseSorterByReference> m_sorter;
 	
 	/// base change algorithm
 	ConjugatingBaseChange<PERM,TRANS,RandomBaseTranspose<PERM,TRANS> > m_baseChange;

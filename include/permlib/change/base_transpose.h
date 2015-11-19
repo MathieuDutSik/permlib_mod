@@ -36,7 +36,7 @@
 #include <permlib/predicate/pointwise_stabilizer_predicate.h>
 #include <permlib/generator/generator.h>
 
-#include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <boost/iterator/indirect_iterator.hpp>
 
 namespace permlib {
@@ -114,8 +114,8 @@ void BaseTranspose<PERM,TRANS>::transpose(BSGS<PERM,TRANS> &bsgs, unsigned int i
 	m_statNewGenerators = 0;
 	TRANS U_i1(U[i+1].n());
 	U_i1.orbit(B[i+1], S_i1);
-	std::unique_ptr<Generator<PERM> > generator(setupGenerator(bsgs, i, S_i, U_i));
-	BOOST_ASSERT(generator != 0);
+    boost::scoped_ptr<Generator<PERM> > generator(setupGenerator(bsgs, i, S_i, U_i));
+    BOOST_ASSERT(generator != 0);
     
 	while (U_i1.size() < targetTransversalSize) {
 		bool newGeneratorFound = false;

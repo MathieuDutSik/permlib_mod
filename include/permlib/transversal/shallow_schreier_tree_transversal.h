@@ -34,7 +34,8 @@
 #define SHALLOWSCHREIERTREETRANSVERSAL_H_
 
 #include <permlib/transversal/schreier_tree_transversal.h>
-#include <memory>
+
+#include <boost/scoped_ptr.hpp>
 #include <boost/dynamic_bitset.hpp>
 
 namespace permlib {

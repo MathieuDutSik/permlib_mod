@@ -37,6 +37,7 @@
 #include <permlib/generator/generator.h>
 
 #include <stack>
+#include <boost/scoped_ptr.hpp>
 #include <boost/tuple/tuple.hpp>
 
 namespace permlib {
@@ -188,7 +189,7 @@ PERM SchreierGenerator<PERM, TRANS>::next() {
 	const PERM &x = **m_Scurrent;
 
 	PERM g = *m_u_beta * x;
-	std::unique_ptr<PERM> u_beta_ptr2(m_U->at(x / m_beta));
+	boost::scoped_ptr<PERM> u_beta_ptr2(m_U->at(x / m_beta));
 	u_beta_ptr2->invertInplace();
 	g *= *u_beta_ptr2;
 
