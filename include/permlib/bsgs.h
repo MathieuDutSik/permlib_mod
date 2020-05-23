@@ -311,7 +311,12 @@ PERM BSGS<PERM, TRANS>::random(const int i) const {
     PERM g(this->n);
     for (int l = this->U.size()-1; l>=i ; --l) {
 		//std::cout << l << " : " << U[l] << " : " << U[l].size() << std::endl;
-        unsigned long beta = *(this->U[l].begin() +  randomInt(this->U[l].size()));
+        // The ugly code below is for replacing the boost::next(iter, unsigned int) code
+        // that no longer compiles.
+        auto iter = this->U[l].begin();
+	for (unsigned int i=0; i<randomInt(this->U[l].size()); i++)
+	  iter++;
+        unsigned long beta = *iter;
         boost::scoped_ptr<PERM> u_beta(this->U[l].at(beta));
         g *= *u_beta;
     }
