@@ -168,7 +168,7 @@ bool SchreierGenerator<PERM, TRANS>::advance() {
 	++m_Scurrent;
 	++m_posS;
 	if (m_Scurrent == m_Send) {
-		m_Scurrent = boost::next(m_Sbegin, m_posSlimit);
+		m_Scurrent = m_Sbegin + m_posSlimit;
 		m_posS = m_posSlimit;
 		++m_Ucurrent;
 		++m_posU;
