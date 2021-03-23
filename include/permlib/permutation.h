@@ -246,7 +246,7 @@ inline Permutation::Permutation(const perm& p)
 
 inline Permutation::Permutation(std::vector<int> const& evect)
 {
-  book is_id = true;
+  bool is_id = true;
   dom_int siz = evect.size();
   std::vector<dom_int> p(siz);
   for (dom_int i=0; i<siz; i++) {
