@@ -4,7 +4,7 @@
 //
 // Copyright (c) 2009-2011 Thomas Rehn <thomas@carmen76.de>
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -15,7 +15,7 @@
 //    documentation and/or other materials provided with the distribution.
 // 3. The name of the author may not be used to endorse or promote products
 //    derived from this software without specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 // IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 // OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -58,10 +58,10 @@ class Permutation {
 public:
 	/// typedef for permutation image
 	typedef std::vector<dom_int> perm;
-	
+
 	/// shared_ptr of this class
 	typedef std::shared_ptr<Permutation> ptr;
-	
+
 	/// default constructor needed sometimes
 	Permutation();
 	/// constructs identity permutation acting on n elements
@@ -72,9 +72,11 @@ public:
 	Permutation(dom_int n, const char* cycles);
 	/// sort of copy constructor
 	explicit Permutation(const perm &p);
+        /// constructor from integer
+        explicit Permutation(std::vector<int> const& evect);
 	/// copy constructor
 	Permutation(const Permutation &p) : m_perm(p.m_perm), m_isIdentity(p.m_isIdentity) {};
-	/// construct from dom_int-iterator  
+	/// construct from dom_int-iterator
 	template<class InputIterator>
 	Permutation(InputIterator begin, InputIterator end) : m_perm(begin, end), m_isIdentity(false) {}
 
@@ -119,20 +121,20 @@ public:
 	inline void flush() {};
 	/// number of points this permutation acts on
 	inline dom_int size() const { return m_perm.size(); }
-	
+
 	/// computes all cycles of this permutation
 	/**
 	 * @param includeTrivialCycles if true, the result list contains also cycles consisting of one single element
 	 * @return list of pairs [minimal element of cycle, cycle length]
 	 */
 	std::list<std::pair<dom_int, unsigned int> > cycles(bool includeTrivialCycles = false) const;
-	
+
 	/// computes the order of this permutation
 	/**
 	 * @return number c such that p^c = identity
 	 */
 	boost::uint64_t order() const;
-	
+
 	/// restricts this permutation p to a subset S of the domain
 	/**
 	 * S must fullfill S^p = S
@@ -143,7 +145,7 @@ public:
 	 */
 	template<typename ForwardIterator>
 	Permutation* project(unsigned int n_proj, ForwardIterator begin, ForwardIterator end) const;
-	
+
 	///updates this permutation such that pos is mapped onto val and val onto pos
 	void setTransposition(dom_int pos, dom_int val);
 protected:
@@ -155,10 +157,10 @@ protected:
 
 	/// INTERNAL ONLY: constructs an "empty" permutation, i.e. without element mapping
 	Permutation(dom_int n, bool) : m_perm(n), m_isIdentity(false) {}
-	
+
 	/// initializes permutation data from a string in cycle form
 	void initFromCycleString(const std::string& cycles);
-	
+
 	friend struct permlib::exports::BSGSSchreierExport;
 };
 
@@ -166,13 +168,13 @@ protected:
 //
 //     ----       IMPLEMENTATION
 //
-inline Permutation::Permutation() 
+inline Permutation::Permutation()
 	: m_perm(0), m_isIdentity(true)
 {
 }
 
-inline Permutation::Permutation(dom_int n) 
-	: m_perm(n), m_isIdentity(true) 
+inline Permutation::Permutation(dom_int n)
+	: m_perm(n), m_isIdentity(true)
 {
 	for (dom_int i=0; i<n; ++i)
 		m_perm[i] = i;
@@ -185,11 +187,11 @@ inline void Permutation::initFromCycleString(const std::string& cycleString) {
 
 	for (dom_int i=0; i<m_perm.size(); ++i)
 		m_perm[i] = i;
-	
+
 #ifdef PERMLIB_DEBUGMODE
 	boost::dynamic_bitset<> seenIndices(m_perm.size());
 #endif
-	
+
 	for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter) {
 		std::stringstream ss(*tok_iter);
 
@@ -200,7 +202,7 @@ inline void Permutation::initFromCycleString(const std::string& cycleString) {
 		BOOST_ASSERT( !seenIndices[first-1] );
 		seenIndices.set(first-1, 1);
 #endif
-		
+
 		while (ss >> temp) {
 #ifdef PERMLIB_DEBUGMODE
 			BOOST_ASSERT( !seenIndices[temp-1] );
@@ -214,22 +216,22 @@ inline void Permutation::initFromCycleString(const std::string& cycleString) {
 }
 
 
-inline Permutation::Permutation(dom_int n, const std::string & cycleString) 
-	: m_perm(n), m_isIdentity(false) 
+inline Permutation::Permutation(dom_int n, const std::string & cycleString)
+	: m_perm(n), m_isIdentity(false)
 {
 	initFromCycleString(cycleString);
 }
 
-inline Permutation::Permutation(dom_int n, const char* cycleString) 
-	: m_perm(n), m_isIdentity(false) 
+inline Permutation::Permutation(dom_int n, const char* cycleString)
+	: m_perm(n), m_isIdentity(false)
 {
 	initFromCycleString(std::string(cycleString));
 }
 
 
-inline Permutation::Permutation(const perm& p) 
-	: m_perm(p), m_isIdentity(false) 
-{ 
+inline Permutation::Permutation(const perm& p)
+	: m_perm(p), m_isIdentity(false)
+{
 #ifdef PERMLIB_DEBUGMODE
 	// check that m_perm really is a permutation
 	std::set<dom_int> values;
@@ -240,6 +242,21 @@ inline Permutation::Permutation(const perm& p)
 	}
 	BOOST_ASSERT( values.size() == m_perm.size() );
 #endif
+}
+
+inline Permutation::Permutation(std::vector<int> const& evect)
+{
+  book is_id = true;
+  dom_int siz = evect.size();
+  std::vector<dom_int> p(siz);
+  for (dom_int i=0; i<siz; i++) {
+    dom_int val = evect[i];
+    if (val != i)
+      is_id = false;
+    p[i] = val;
+  }
+  m_perm = p;
+  m_isIdentity = is_id;
 }
 
 inline Permutation Permutation::operator*(const Permutation &p) const {
@@ -256,12 +273,12 @@ inline Permutation& Permutation::operator*=(const Permutation &p) {
 	BOOST_ASSERT(p.m_perm.size() == m_perm.size());
 	m_isIdentity = false;
 	perm tmp(m_perm);
-	
+
 	for (dom_int i=0; i<m_perm.size(); ++i) {
 		tmp[i] = p.m_perm[m_perm[i]];
 	}
 	m_perm = tmp;
-	
+
 	return *this;
 }
 
@@ -316,11 +333,11 @@ inline std::list<std::pair<dom_int, unsigned int> > Permutation::cycles(bool inc
 	typedef std::pair<dom_int, unsigned int> CyclePair;
 	std::list<CyclePair> cycleList;
 	unsigned int cycleLength = 0;
-	
+
 	for (dom_int x=0; x<m_perm.size(); ++x) {
 		if (worked[x])
 			continue;
-		
+
 		dom_int px, startX;
 		worked.set(x, 1);
 		startX = x;
@@ -330,9 +347,9 @@ inline std::list<std::pair<dom_int, unsigned int> > Permutation::cycles(bool inc
 				cycleList.push_back(CyclePair(x, 1));
 			continue;
 		}
-		
+
 		cycleLength = 2;
-		
+
 		while (m_perm[px] != startX) {
 				worked.set(px, 1);
 				px = m_perm[px];
@@ -341,7 +358,7 @@ inline std::list<std::pair<dom_int, unsigned int> > Permutation::cycles(bool inc
 		worked.set(px, 1);
 		cycleList.push_back(CyclePair(startX, cycleLength));
 	}
-	
+
 	return cycleList;
 }
 
@@ -362,10 +379,10 @@ Permutation* Permutation::project(unsigned int n_proj, ForwardIterator begin, Fo
 	for (ForwardIterator it = begin; it != end; ++it) {
 		projectionMap[*it] = c++;
 	}
-	
+
 	Permutation* proj = new Permutation(n_proj);
 	bool is_identity = true;
-	
+
 	while (begin != end) {
 		dom_int x = *begin++;
 		BOOST_ASSERT( projectionMap.find(x) != projectionMap.end() );
@@ -375,20 +392,20 @@ Permutation* Permutation::project(unsigned int n_proj, ForwardIterator begin, Fo
 		BOOST_ASSERT( proj_x < n_proj );
 		BOOST_ASSERT( proj_px < n_proj );
 		proj->m_perm[ proj_x ] = proj_px;
-		
+
 		if (proj_x != proj_px)
 			is_identity = false;
 	}
-	
+
 	proj->m_isIdentity = is_identity;
-	
+
 	return proj;
 }
 
 inline void Permutation::setTransposition(dom_int pos, dom_int val) {
 	BOOST_ASSERT(pos < m_perm.size());
 	BOOST_ASSERT(val < m_perm.size());
-	
+
 	m_perm[pos] = val;
 	m_perm[val] = pos;
 }
@@ -396,7 +413,7 @@ inline void Permutation::setTransposition(dom_int pos, dom_int val) {
 inline std::ostream& operator<<(std::ostream& out, const Permutation& p) {
 	typedef std::pair<dom_int, unsigned int> CyclePair;
 	bool output = false;
-	
+
 	std::list<CyclePair> cycleList = p.cycles();
 	BOOST_FOREACH(const CyclePair& c, cycleList) {
 		dom_int px = p / c.first;
@@ -411,10 +428,10 @@ inline std::ostream& operator<<(std::ostream& out, const Permutation& p) {
 		}
 		output = true;
 	}
-	
+
 	if (!output)
 		out << "()";
-	
+
 	return out;
 }
 
