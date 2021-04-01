@@ -56,6 +56,7 @@ namespace exports { struct BSGSSchreierExport; }
 /// Permutation class storing all values explicitly
 class Permutation {
 public:
+        using Tidx = int;
 	/// typedef for permutation image
 	typedef std::vector<dom_int> perm;
 
