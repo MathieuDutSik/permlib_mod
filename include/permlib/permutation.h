@@ -97,6 +97,12 @@ public:
 	Permutation operator~() const;
 	/// permutation inplace inversion
 	Permutation& invertInplace();
+	/// operator=
+        Permutation operator=(const Permutation& p) const {
+          m_perm = p.m_perm;
+          m_isIdentity = p.m_isIdentity;
+          return *this;
+        }
 	/// equals operator
 	bool operator==(const Permutation &p2) const { return m_perm == p2.m_perm; };
 	/// lower operator
