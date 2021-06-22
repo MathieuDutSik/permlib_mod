@@ -98,7 +98,7 @@ public:
 	/// permutation inplace inversion
 	Permutation& invertInplace();
 	/// operator=
-        Permutation operator=(const Permutation& p) const {
+        Permutation operator=(const Permutation& p) {
           m_perm = p.m_perm;
           m_isIdentity = p.m_isIdentity;
           return *this;
